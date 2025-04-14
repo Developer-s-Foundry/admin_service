@@ -4,6 +4,7 @@ import { postgresLoader } from './database/datasource';
 import { WinstonLoggerService } from './config/logger.service';
 import { config } from './config/config.service';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { CustomErrorFilter } from './helpers/errorHandler';
 
 async function bootstrap() {
   const appConfig = config()
@@ -12,6 +13,9 @@ async function bootstrap() {
   await postgresLoader();
 
   const app = await NestFactory.create(AppModule);
+
+  // Register global exception filter
+  app.useGlobalFilters(new CustomErrorFilter())
 
   //set up custom logger
   const logger = app.get(WinstonLoggerService);  // Get the WinstonLoggerService instance
@@ -26,7 +30,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document); // Swagger UI will be available at `/api`
+  SwaggerModule.setup('api', app, document); 
 
   //start the application
   const port = appConfig.PORT.APP_PORT
