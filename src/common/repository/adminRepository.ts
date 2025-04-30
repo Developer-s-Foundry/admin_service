@@ -9,7 +9,7 @@ export class AdminRepository {
     private readonly entity: Repository<Admin>;
 
     constructor() {
-        this.entity = dataSource.getRepository(Admin); // Use dataSource to get the repository
+        this.entity = dataSource.getRepository(Admin); 
     }
 
     async findOneByEmail(email: string): Promise<Admin | undefined> {
@@ -19,7 +19,7 @@ export class AdminRepository {
     async add(adminData: Partial<Admin>): Promise<Admin> {
         const admin = this.entity.create({
             ...adminData,
-            admin_id: uuidv4(), // Generate a unique ID for admin_id
+            admin_id: uuidv4(), 
         });
         return await this.entity.save(admin);
     }

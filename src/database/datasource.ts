@@ -33,7 +33,7 @@ export const postgresLoader = async () => {
       return conn;
     } catch (err) {
       console.error(`❌ Database connection error: ${err}`);
-      console.log(config().database);
+      console.log(configs().database);
       throw err;
     }
   };

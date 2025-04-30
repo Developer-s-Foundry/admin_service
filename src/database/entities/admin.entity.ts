@@ -14,7 +14,7 @@ export enum AdminRole {
 }
 
 export interface IAdmin{
-  _id: string;
+  admin_id: string;
   email: string;
   password: string;
   status: AccountStatus;

@@ -4,7 +4,8 @@ import Chance from "chance";
 const bcrypt = require("bcrypt");
 import jwt from "jsonwebtoken"
 import { configs } from "../config/config.service";
-//import { uuid } from "uuidv4";
+import { uuid } from "uuidv4";
+import moment from "moment";
 
 
 // const chance = new Chance();
@@ -39,10 +40,10 @@ import { configs } from "../config/config.service";
     /**
      * generateJWT
      */
-    export function generateJWT(email: string, user_id: string) {
+    export function generateJWT(email: string, admin_id: string) {
         const jwtData = {
             email, 
-            user_id
+            admin_id
         }
         return jwt.sign({ jwtData }, configs().JWT_TOKEN.JWT_SECRET, {
             expiresIn: '3600s',
@@ -51,15 +52,15 @@ import { configs } from "../config/config.service";
         });
     }
 
-    // export function generateUUID() {
-    //     const currentTime = moment();
-    //     const lifeSpan = 24
-    //     const expiresAt = currentTime.add(lifeSpan,'hours').format() as unknown as Date;
-    //     return {
-    //         uuid: uuid(),
-    //         expiresAt
-    //     }
-    // }
+    export function generateUUID() {
+        const currentTime = moment();
+        const lifeSpan = 24
+        const expiresAt = currentTime.add(lifeSpan,'hours').format() as unknown as Date;
+        return {
+            uuid: uuid(),
+            expiresAt
+        }
+    }
 
 
     // export function hasExpired(expectedExpirationDate: any){
