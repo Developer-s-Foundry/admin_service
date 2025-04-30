@@ -2,7 +2,7 @@ import { Injectable, LoggerService } from '@nestjs/common';
 import * as winston from 'winston';
 import * as DailyRotateFile from 'winston-daily-rotate-file';
 import { hostname } from 'os';
-import { config } from './config.service';
+import { configs } from './config.service';
 
 
 const { combine, timestamp, printf, errors, colorize } = winston.format;
@@ -11,7 +11,7 @@ const { combine, timestamp, printf, errors, colorize } = winston.format;
 export class WinstonLoggerService implements LoggerService {
   private logger = winston.createLogger({
     levels: winston.config.syslog.levels,
-    level: config().log.level || 'info', // Add fallback for log level
+    level: configs().log.level || 'info', // Add fallback for log level
     format: combine(
       errors({ stack: true }),
       timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
@@ -26,7 +26,7 @@ export class WinstonLoggerService implements LoggerService {
         dirname: `logs/${hostname()}/combined`,
         filename: 'combined',
         extension: '.log',
-        level: config().isProduction ? 'info' : 'debug',
+        level: configs().isProduction ? 'info' : 'debug',
       }),
       new DailyRotateFile({
         dirname: `logs/${hostname()}/error`,
