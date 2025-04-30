@@ -1,13 +1,14 @@
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { postgresLoader } from './database/datasource';
 import { WinstonLoggerService } from './config/logger.service';
-import { config } from './config/config.service';
+import { configs } from './config/config.service';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { CustomErrorFilter } from './helpers/errorHandler';
 
 async function bootstrap() {
-  const appConfig = config()
+  const appConfig = configs()
 
   //initialize postgres connection
   await postgresLoader();
@@ -16,6 +17,7 @@ async function bootstrap() {
 
   // Register global exception filter
   app.useGlobalFilters(new CustomErrorFilter())
+  app.useGlobalPipes(new ValidationPipe());
 
   //set up custom logger
   const logger = app.get(WinstonLoggerService);  // Get the WinstonLoggerService instance
@@ -35,6 +37,6 @@ async function bootstrap() {
   //start the application
   const port = appConfig.PORT.APP_PORT
   await app.listen(port);
-  console.log(`Application is running on: http://localhost:${port}`);
+  logger.log(`Application is running on: http://localhost:${port}`);
 }
 bootstrap();
