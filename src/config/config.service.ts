@@ -20,5 +20,9 @@ export const config = () => ({
     level: process.env.LOG_LEVEL || 'info',  // Make sure to add a default log level if not provided
   },
 
+  microservice:{
+    RABBIT_MQ_URL: process.env.RABBITMQ_URL
+  },
+
   isProduction: process.env.NODE_ENV === 'production', 
 });
